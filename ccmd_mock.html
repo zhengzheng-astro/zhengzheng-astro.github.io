@@ -1,0 +1,176 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>Zheng Zheng - Data</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link href="style.css" rel="stylesheet" type="text/css">
+<link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />
+</head>
+<body>
+<div id="container">
+	<div id="nav">
+		<ul>
+			<li><a href=index.html>HOME</a></li>
+			<li><a href=research.html>RESEARCH</a></li>
+			<li><a href=publications.html>PUBLICATIONS</a></li>
+                        <li><a href=cv.html>CV</a></li>
+                        <li><a href=group.html>GROUP</a></li>
+                        <li class="lastnav"><a href=data.html>DATA</a></li>
+		</ul>
+	</div>
+	<div id="body">
+		<div id="left">
+		<div id="right">
+			<div class="textboxtop">
+CCMD Galaxy Mock Catalogs
+			</div>
+			
+			<div class="textbox">
+
+<b>a mock with galaxy magnitude and color that reproduces<br>
+the luminosity- and color-dependent clustering of SDSS Main galaxies </b>
+
+<a href="Data/cmd_ccmd.png">
+<img src="Data/cmd_ccmd.png" width=400px>
+</a>
+<br>
+
+<b><font color=blue size=4>Introduction</font></b>
+<br>
+
+We construct mock galaxy catalogs that reproduce the color- and luminosity-dependent clustering of SDSS DR7 galaxies based on the modeling results in <a link href="https://ui.adsabs.harvard.edu/abs/2018MNRAS.481.5470X/abstract">Xu et al. (2018)</a>. In the model, the galaxy-halo relation is parameterized as the galaxy color-magnitude distribution as a function of halo mass (as illustrated in the above plot), i.e., the Conditional Color-Magnitude Distribution (CCMD). The model is constrained by simultaneously fitting the projected two-point correlation functions of galaxies in fine bins of color and magnitude, adopting the accurate and efficient halo-based galaxy clustering computation with N-body simulations in <a link href="https://ui.adsabs.harvard.edu/abs/2016MNRAS.458.4015Z/abstract">Zheng & Guo (2016)</a>.
+<p>
+
+The CCMD galaxy mocks can be used for many applications. For example, they can serve as DESI BGS mocks for various tests. Currently, we provide one galaxy mock catalog based on the MDPL2 N-body simulation. We plan to extend the construction to use other N-body simulations. If you have specific needs beyond the mock catalog provided here, please <a href="#contact">contact us</a>.
+<p>
+
+<b><font color=blue size=4>Mocks</font></b>
+<br>
+
+The galaxy mock construction is done through populating Rockstar halos in the MDPL2 N-body simulation (box size 1000Mpc/h comoving on a side; redshift=0). Central galaxies are put at the potential minimum of halos, and satellite galaxies are drawn from random particles inside halos. There are two files, the galaxy mock and the associated halo information file.
+<p>
+<ul>
+<li> 
+<a href="Data/CCMD_Mock01_GalInfo.dat.gz"><b>Galaxy Mock Catalog</b></a> (1.21GB; 2.80GB after decompression; 28,670,052 galaxies)<br>
+</li>
+<li>
+<a href="Data/CCMD_Mock01_HaloInfo.dat.gz"><b>Halo Information File</b></a> (0.19GB; 1.06GB after decompression; 31,559,265 halos)
+</li>
+</ul>
+Both files are in ascii format and should be pretty much self-explanatory from their headers. Below are the descriptions in detail. 
+<p>
+
+The galaxy mock consists of galaxies with r-band absolute magnitude M<sub>r</sub>&lt;-18. After 8 header lines, each line in the mock is a galaxy, with the following fields.
+<ul>
+<li>
+galID x y z vx vy vz Mr gmr type
+<br><br>
+ galID -- galaxy ID (starting from 1, in a continuous ascending order) <br>
+ x y z -- galaxy position (Mpc/h comoving) <br>
+ vx vy vz -- galaxy peculiar velocity (km/s) <br>
+ Mr -- r-band absolute magnitude (usual notation, K- and evolution-corrected to redshift~0.1, calculated assuming h=1) <br>
+ gmr -- g-r color (usual notation, K- and evolution-corrected to redshift~0.1)<br>
+ type -- CCMD model component type (0/1 - pseudo-blue/red central galaxy; 2/3 - pseudo-blue/red satellite galaxy)<br>
+</li>
+</ul>
+In most applications, 'type' may be of no particular interest (but it can be used to separate galaxies into centrals and satellites). Galaxy positions are in real space. To produce the redshift-space mock, after choosing the line-of-sight direction (e.g., z direction), shift the positions (e.g., z =&gt; z+vz/100 for redshift=0, if no velocity bias is assumed).  
+<p>
+
+In the halo information file, there are 8 header lines, after which each line represents a halo (minimum mass 10<sup>11</sup>Msun/h). Each halo line has the following fields.
+<ul>
+<li>
+haloID logMh Ngal galID_starting
+<br><br>
+ haloID -- Rockstar halo ID in the MDPL2 simulation <br>
+ logMh  -- log10[halo virial mass / (Msun/h)] <br>
+ Ngal   -- number of mock galaxies in this halo <br>
+ galID_starting -- galaxies in this halo have galaxy IDs from galID_starting to  (galID_starting+Ngal-1) <br>
+</li>
+</ul>
+In combination with the galaxy mock, the halo information file can be used to obtain the various forms of galaxy-halo relation in the mock, such as the conditional luminosity function, the conditional color-magnitude distribution, and the mean halo occupation function for a mock galaxy sample defined by cuts in galaxy color and luminosity, all separated into central and satellite galaxy contributions. Note that halo mass here is virial mass M<sub>vir</sub>. One can use the formula in <a link href="https://ui.adsabs.harvard.edu/abs/2018MNRAS.481.5470X/abstract">Xu et al. (2018; section 3.3)</a> to convert it to M<sub>200b</sub> (with halo mean density being 200 times that of the background universe): <br>
+log M<sub>200b</sub> - log M<sub>vir</sub> = 0.0052(log M<sub>vir</sub> - 13.5) + 0.0498.
+<p> 
+
+
+<b><font color=blue size=4>Credits</font></b>
+<br>
+
+If you use the CCMD mock for your investigations and applications, please cite the following references as appropriate.
+<p>
+<ul>
+<li>
+<b>CCMD Modeling of SDSS Galaxy Clustering</b><br>
+<a link href="https://ui.adsabs.harvard.edu/abs/2018MNRAS.481.5470X/abstract">Xu et al. (2018), MNRAS, 481, 5470</a> 
+<br>
+"The conditional colour-magnitude distribution - I. A comprehensive model of the colour-magnitude-halo mass distribution of present-day galaxies"
+</li>
+<p>
+<li>
+<b>Modeling Galaxy Clustering with Simulations</b><br>
+<a link href="https://ui.adsabs.harvard.edu/abs/2016MNRAS.458.4015Z/abstract">Zheng & Guo (2016), MNRAS, 458, 4015</a>
+<br>
+"Accurate and efficient halo-based galaxy clustering modelling with simulations"
+</li>
+</ul>
+<p>
+
+As we used the MDPL2 N-body simulation data to produce the mock galaxy catalog, please properly acknowledge the simulation and data service efforts by following their guideline on the <a href=https://www.cosmosim.org/cms/documentation/projects/multidark-bolshoi-project/#credits>CosmoSim</a> website.
+<p>
+
+<b><font color=blue size=4 id="contact">Contact</font></b>
+<br>
+
+If you have any questions or comments about the CCMD mock, please let us know, If you have specific needs and would like to collaborate with us, please get in touch with us. 
+
+<ul>
+<li> Zheng Zheng (zhengzheng_at_astro.utah.edu), University of Utah
+</li> 
+<li> Haojie Xu (haojie.xu_at_sjtu.edu.cn), Shanghai Jiao Tong University
+</li>
+</ul>
+<p>
+
+<b><font color=blue size=4>Gallery</font></b>
+<br>
+<br>
+<a href="Data/slice.png">
+<img src="Data/slice.png" width=320px>
+</a>
+<a href="Data/slice_zspace.png">
+<img src="Data/slice_zspace.png" width=320px>
+</a>
+<br>
+A slice (10Mpc/h thick) of the mock catalog (left - real space; right - redshift space), color-coded by galaxy color.
+<p>
+<br>
+
+<a href="Data/zoomin.png">
+<img src="Data/zoomin.png" width=298px>
+</a>
+<a href="Data/zoomin_zspace.png">
+<img src="Data/zoomin_zspace.png" width=298px>
+</a>
+<br>
+A zoom-in region (10Mpc/h x 10Mpc/h; left - real space; right - redshift space, with the vertical direction as the line of sight), with symbol size representing galaxy luminosity and symbol color for galaxy color.
+<p>
+<br>
+
+<a href="Data/xirppi_full_rspace.png">
+<img src="Data/xirppi_full_rspace.png" alt="image" width=370px>
+</a>
+<a href="Data/xirppi_full_zspace.png">
+<img src="Data/xirppi_full_zspace.png" alt="image" width=370px>
+</a>
+<br>
+An example of the real-space (left) and redshift-space (right) two-point correlation function measured for the M<sub>r</sub> &lt; -21 mock galaxy sample (averaged over three viewing directions; note the BAO feature at pair separation ~100Mpc/h).
+<p>
+
+
+
+			</div>			
+			<div class="textboxbottom">
+			</div>
+
+</div>
+</body>
+</html>

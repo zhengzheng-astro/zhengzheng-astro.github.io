@@ -1,0 +1,11 @@
+apropos chi2
+chi2frac
+help chi2frac
+chi2frac  2 1
+chi2frac  2 2.3
+chi2frac 6 2.3
+chi2frac 6 4
+chi2frac 6 5
+chi2frac 6 6
+chi2frac 6 7
+quit
